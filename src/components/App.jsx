@@ -8,8 +8,8 @@ import CreateArea from "./CreateArea";
 function App() {
 
     const [listItem, setList] = useState([]);
-
-    function addItem(inputText){
+    // this will add more item to the previous list
+    function addItem(inputText){ 
         setList((prevValue) => {
             return [
                 ...prevValue, inputText

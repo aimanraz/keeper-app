@@ -1,7 +1,10 @@
 import React, {useState}  from "react";
+import Zoom from '@mui/material/Zoom';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
 
 function CreateArea(props) {
-    
+    const [isToggle, setIsToggle] = useState(false);
     const [inputText, setInputText] = useState({
         title: "",
         content: ""
@@ -11,35 +14,39 @@ function CreateArea(props) {
         const {name, value} = event.target;
 
         setInputText((prevValue) => {
-            if (name === "title"){
                 return {
-                    title: value,
-                    content: prevValue.content
+                    ...prevValue,
+                    [name]: value
                 }
-            } 
-            else if (name === "content"){
-                return {
-                    title: prevValue.title,
-                    content: value
-                }
-            }
-        })
+            })
     };
     
     return (
     <div>
-      <form onSubmit={(e) => {
+      <form className="create-note " onSubmit={(e) => {
         e.preventDefault()
       } }>
-        <input name="title" placeholder="Title" value={inputText.title} onChange={handleChange}/>
-        <textarea name="content" placeholder="Take a note..." rows="3" value={inputText.content} onChange={handleChange}/>
-        <button onClick={() => {
+        {isToggle ? <input name="title" placeholder="Title" value={inputText.title} onChange={handleChange}/> : ''}
+        <textarea 
+            name="content" 
+            placeholder="Take a note..." 
+            rows={isToggle ? 3 : 1}
+            value={inputText.content} 
+            onChange={handleChange}
+            onClick={() => setIsToggle(true)}
+        />{isToggle ?
+
+        <Zoom in={setIsToggle}>
+          <Fab onClick={() => {
             props.onAdd(inputText);
             setInputText({
                 title: "",
                 content: ""
             });
-        }}>Add</button>
+        }}>
+            <AddIcon/>
+          </Fab>
+        </Zoom> : ''}
       </form>
     </div>
   );
